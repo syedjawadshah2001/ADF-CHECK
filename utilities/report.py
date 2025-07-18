@@ -50,7 +50,7 @@ def generate_comprehensive_pdf(all_errors):
         section_titles = [
             "Font Size Errors", "Font Style Errors", "Table & Figure Caption Errors",
             "Heading Style Errors", "Line Spacing Errors", "Header & Footer Errors",
-            "Margin Errors", "Reference Errors"
+            "Margin Errors", "Reference Errors" ,"Page Number Errors"
         ]
         sections = {title: [] for title in section_titles}
         current_section = None

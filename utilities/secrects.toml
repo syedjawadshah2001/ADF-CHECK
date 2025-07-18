@@ -1,0 +1,20 @@
+[firebase]
+api_key = "AIzaSyA7y8QSa4lCfUejU87ZUj2s0FewE3huw40"
+auth_domain = "adf-check.firebaseapp.com"
+project_id = "adf-check"
+storage_bucket = "adf-check.firebasestorage.app"
+messaging_sender_id = "109556990859"
+app_id = "1:109556990859:web:2b48cf3c56ac2470c0658e"
+measurement_id = "G-2MHPBQV1QS"
+
+import streamlit as st
+
+firebase_config = {
+    "apiKey": st.secrets["firebase"]["api_key"],
+    "authDomain": st.secrets["firebase"]["auth_domain"],
+    "projectId": st.secrets["firebase"]["project_id"],
+    "storageBucket": st.secrets["firebase"]["storage_bucket"],
+    "messagingSenderId": st.secrets["firebase"]["messaging_sender_id"],
+    "appId": st.secrets["firebase"]["app_id"],
+    "measurementId": st.secrets["firebase"]["measurement_id"]
+}

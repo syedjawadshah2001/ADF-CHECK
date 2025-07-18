@@ -10,6 +10,7 @@ from utilities.header_footer_handling import check_header_footer_styles , check_
 from utilities.apa_handling import validate_apa_reference , extract_references_from_docx 
 from utilities.report import generate_comprehensive_pdf
 from utilities.ai_plagiarism import check_ai_plagiarism
+from utilities.pagenumber import is_page_number_field , check_page_number_format
 
 
 import tempfile
@@ -24,7 +25,15 @@ from docx.shared import Pt
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
-
+firebase_config = {
+    "apiKey": st.secrets["firebase"]["api_key"],
+    "authDomain": st.secrets["firebase"]["auth_domain"],
+    "projectId": st.secrets["firebase"]["project_id"],
+    "storageBucket": st.secrets["firebase"]["storage_bucket"],
+    "messagingSenderId": st.secrets["firebase"]["messaging_sender_id"],
+    "appId": st.secrets["firebase"]["app_id"],
+    "measurementId": st.secrets["firebase"]["measurement_id"]
+}
 
 # --- Streamlit Pages --- (Login, Signup, Home, Upload)
 def signup_page():
@@ -132,10 +141,12 @@ def upload_page():
                 line_spacing_errors = check_line_spacing(document)
                 header_footer_errors = check_header_footer_styles(document)
                 apa_references = extract_references_from_docx(uploaded_file)
+                check_page_number_format =is_page_number_field
                 apa_errors = [f"\u274C Reference {i+1}: '{ref}' is not in APA format." for i, ref in enumerate(apa_references) if not validate_apa_reference(ref)]
                 
                 # Create structured error list with section headers
                 all_errors = []
+                check_page_number_format =[]
                 all_errors += ["Font Size Errors"] + font_size_errors
                 all_errors += ["Font Style Errors"] + font_style_errors
                 all_errors += ["Table & Figure Caption Errors"] + caption_style_errors
@@ -144,6 +155,8 @@ def upload_page():
                 all_errors += ["Header & Footer Errors"] + header_footer_errors
                 all_errors += ["Margin Errors"] + margin_errors
                 all_errors += ["Reference Errors"] + apa_errors
+                check_page_number_format += ["is_page_number_field"] + check_page_number_format
+                
                 
 
                 # Generate PDF report

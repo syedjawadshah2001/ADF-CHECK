@@ -1,0 +1,7 @@
+streamlit
+firebase-admin
+python-docx
+PyMuPDF
+requests
+Pillow
+numpy

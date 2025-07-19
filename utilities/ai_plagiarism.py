@@ -8,7 +8,7 @@ def check_ai_plagiarism(extracted_text: str) -> dict:
     """
     url = "https://ai-content-detector1.p.rapidapi.com/"
     headers = {
-        "x-rapidapi-key": "7b0c11e6abmshbb0e8d526465caap12c233jsn239e148c46b2",
+        "x-rapidapi-key": "95ed1f0ccfmsh5b7b5a6338e2b35p1eb87djsnafe4b524dc3c",
         "x-rapidapi-host": "ai-content-detector1.p.rapidapi.com"
     }
     querystring = {"text": extracted_text[:3000]}  # Limit text to avoid API rejection

@@ -11,7 +11,7 @@ from utilities.apa_handling import validate_apa_reference , extract_references_f
 from utilities.report import generate_comprehensive_pdf
 from utilities.ai_plagiarism import check_ai_plagiarism
 from utilities.pagenumber import is_page_number_field , check_page_number_format
-
+from firebase_admin import credentials, firestore
 
 import tempfile
 import shutil
@@ -25,16 +25,28 @@ from docx.shared import Pt
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
-firebase_config = {
-    "apiKey": st.secrets["firebase"]["api_key"],
-    "authDomain": st.secrets["firebase"]["auth_domain"],
-    "projectId": st.secrets["firebase"]["project_id"],
-    "storageBucket": st.secrets["firebase"]["storage_bucket"],
-    "messagingSenderId": st.secrets["firebase"]["messaging_sender_id"],
-    "appId": st.secrets["firebase"]["app_id"],
-    "measurementId": st.secrets["firebase"]["measurement_id"]
-}
+# Initialize Firebase from Streamlit secrets
+cred = credentials.Certificate({
+    "type": st.secrets["type"],
+    "project_id": st.secrets["project_id"],
+    "private_key_id": st.secrets["private_key_id"],
+    "private_key": st.secrets["private_key"].replace('\\n', '\n'),
+    "client_email": st.secrets["client_email"],
+    "client_id": st.secrets["client_id"],
+    "auth_uri": st.secrets["auth_uri"],
+    "token_uri": st.secrets["token_uri"],
+    "auth_provider_x509_cert_url": st.secrets["auth_provider_x509_cert_url"],
+    "client_x509_cert_url": st.secrets["client_x509_cert_url"]
+})
 
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+
+# Optional test
+doc_ref = db.collection("test").document("check")
+doc_ref.set({"message": "connected from Streamlit"})
+
+st.success("✅ Firebase Firestore connected successfully!")
 # --- Streamlit Pages --- (Login, Signup, Home, Upload)
 def signup_page():
     st.title("Signup")

@@ -1,4 +1,5 @@
 import streamlit as st
+import firebase_admin
 from utilities.db import db
 from firebase_admin import auth
 from itertools import chain

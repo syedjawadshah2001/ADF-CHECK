@@ -1,5 +1,5 @@
 import streamlit as st
-import firebase_admin
+
 from utilities.db import db
 from firebase_admin import auth
 from itertools import chain
@@ -12,7 +12,7 @@ from utilities.apa_handling import validate_apa_reference , extract_references_f
 from utilities.report import generate_comprehensive_pdf
 from utilities.ai_plagiarism import check_ai_plagiarism
 from utilities.pagenumber import is_page_number_field , check_page_number_format
-from firebase_admin import credentials, firestore
+
 
 import tempfile
 import shutil
@@ -26,22 +26,6 @@ from docx.shared import Pt
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
-# Initialize Firebase from Streamlit secrets
-cred = credentials.Certificate({
-    "type": st.secrets["type"],
-    "project_id": st.secrets["project_id"],
-    "private_key_id": st.secrets["private_key_id"],
-    "private_key": st.secrets["private_key"].replace('\\n', '\n'),
-    "client_email": st.secrets["client_email"],
-    "client_id": st.secrets["client_id"],
-    "auth_uri": st.secrets["auth_uri"],
-    "token_uri": st.secrets["token_uri"],
-    "auth_provider_x509_cert_url": st.secrets["auth_provider_x509_cert_url"],
-    "client_x509_cert_url": st.secrets["client_x509_cert_url"]
-})
-
-firebase_admin.initialize_app(cred)
-db = firestore.client()
 
 # Optional test
 doc_ref = db.collection("test").document("check")

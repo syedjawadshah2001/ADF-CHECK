@@ -2,6 +2,8 @@ __pycache__/
 *.pyc
 .env
 *firebase-adminsdk*.json
+secrects.toml
+secrets.toml
 .pytest_cache/
 
 .pdf-tools/

@@ -133,10 +133,13 @@ def create_app(data_directory=None):
         if request.url.path.startswith('/api/') and request.method not in ('GET','HEAD','OPTIONS'):
             origin = request.headers.get('origin')
             allowed = {str(request.base_url).rstrip('/'), 'http://127.0.0.1:5173', 'http://localhost:5173'}
+            allowed.update(value.strip().rstrip('/') for value in os.environ.get('ADF_ALLOWED_ORIGINS', '').split(',') if value.strip())
             if request.headers.get('x-requested-with') != 'ADF-Web' or (origin and origin not in allowed):
                 from fastapi.responses import JSONResponse
                 return JSONResponse({'detail':'Request origin could not be verified.'}, status_code=403)
         response = await call_next(request)
+        if request.url.path.startswith('/api/'):
+            response.headers['Cache-Control'] = 'no-store'
         response.headers['X-Content-Type-Options'] = 'nosniff'
         response.headers['Referrer-Policy'] = 'same-origin'
         response.headers['X-Frame-Options'] = 'DENY'

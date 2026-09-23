@@ -3,6 +3,7 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import jwt
@@ -73,6 +74,15 @@ class APITests(unittest.TestCase):
         self.assertEqual(blocked.status_code, 403)
         self.assertEqual(self.client.get('/api/reviews').status_code, 401)
         self.assertEqual(self.client.post('/api/reviews', content=sample_bytes()).status_code, 401)
+
+    def test_netlify_origin_and_private_cache_headers(self):
+        with patch.dict('os.environ', {'ADF_ALLOWED_ORIGINS': 'https://autodocu.netlify.app', 'ADF_SECURE_COOKIES': '1'}):
+            response = self.client.post('/api/auth/signup', headers={'Origin': 'https://autodocu.netlify.app'}, json={'username': 'netlifyuser', 'password': 'strong-password'})
+            self.assertEqual(response.status_code, 201, response.text)
+            self.assertIn('Secure', response.headers['set-cookie'])
+            self.assertEqual(response.headers['cache-control'], 'no-store')
+            blocked = self.client.post('/api/auth/login', headers={'Origin': 'https://autodocu.netlify.app.evil.example'}, json={'username': 'netlifyuser', 'password': 'strong-password'})
+            self.assertEqual(blocked.status_code, 403)
 
     def test_upload_download_and_cross_user_isolation(self):
         self.signup()

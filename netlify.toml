@@ -1,21 +1,9 @@
 [build]
   base = "frontend"
-  command = "npm run build"
+  command = "npm run build && node scripts/netlify-routes.mjs"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "22"
 
-# Once the Python API is hosted, replace this rule's destination with
-# https://YOUR-BACKEND-HOST/api/:splat and change status to 200.
-# Keep this rule before the SPA fallback.
-[[redirects]]
-  from = "/api/*"
-  to = "/api-unavailable.json"
-  status = 503
-  force = true
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# scripts/netlify-routes.mjs writes dist/_redirects using ADF_BACKEND_URL.

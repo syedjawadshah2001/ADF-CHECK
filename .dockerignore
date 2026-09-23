@@ -1,0 +1,12 @@
+.git
+.env*
+data
+frontend
+utilities
+tmp
+output
+.pdf-tools
+__pycache__
+*.json
+*.toml
+*.log

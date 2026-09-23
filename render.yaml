@@ -1,0 +1,18 @@
+# Paid service and persistent disk: review costs in Render before creating.
+services:
+  - type: web
+    name: adf-check-api
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - key: ADF_SECURE_COOKIES
+        value: "1"
+      - key: ADF_DATA_DIR
+        value: /var/data/adf
+      - key: ADF_ALLOWED_ORIGINS
+        value: https://autodocu.netlify.app
+    disk:
+      name: adf-accounts
+      mountPath: /var/data
+      sizeGB: 1
